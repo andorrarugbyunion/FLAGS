@@ -267,10 +267,10 @@ async function fetchSheet(){
     if(!r.ok)return false;
     const csv=await r.text();
     const fresh={};
-    // Columns: Partit(0) | MatchID(1) | HomeScore(2) | AwayScore(3)
+    // Columns: empty(0) | Country1(1) | Flag1(2) | Country2(3) | Flag2(4) | MatchID(5) | HomeScore(6) | AwayScore(7)
     csv.trim().split('\n').slice(1).forEach(line=>{
       const p=line.split(',').map(s=>s.trim().replace(/^"|"$/g,''));
-      const id=p[1],h=parseInt(p[2]),a=parseInt(p[3]);
+      const id=p[5],h=parseInt(p[6]),a=parseInt(p[7]);
       if(id&&/^[WM]\d+$/.test(id)&&!isNaN(h)&&!isNaN(a)) fresh[id]={h,a};
     });
     SCORES=fresh;
