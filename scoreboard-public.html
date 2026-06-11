@@ -43,7 +43,7 @@ main{padding:12px;max-width:780px;margin:0 auto;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 .live-matchup{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
 .live-team{text-align:center;min-width:90px;}
-.live-flag{font-size:30px;display:block;}
+.live-flag{display:block;}.live-flag img{width:54px;height:36px;object-fit:cover;border-radius:3px;box-shadow:0 1px 4px rgba(0,0,0,.4);}
 .live-name{font-size:12px;color:rgba(255,255,255,.8);margin-top:3px;font-weight:700;}
 .live-score-big{font-size:44px;font-weight:900;min-width:110px;letter-spacing:3px;color:#fff;text-shadow:0 2px 8px rgba(0,200,80,.4);}
 .live-meta{font-size:11px;color:rgba(255,255,255,.5);margin-top:8px;}
@@ -64,7 +64,7 @@ table.ptbl{width:100%;border-collapse:collapse;}
 .ptbl tr:last-child td{border-bottom:none;}
 .ptbl tr.leader td{background:rgba(254,204,0,.05);}
 .tcell{display:flex;align-items:center;gap:6px;font-weight:600;}
-.tflag{font-size:15px;flex-shrink:0;}
+.tflag img{width:24px;height:16px;object-fit:cover;border-radius:2px;vertical-align:middle;flex-shrink:0;}
 .tname{font-size:11px;white-space:nowrap;}
 .pts-cell{font-weight:800;color:var(--accent);}
 
@@ -85,7 +85,7 @@ table.ptbl{width:100%;border-collapse:collapse;}
 .mteams{flex:1;display:flex;align-items:center;gap:6px;justify-content:space-between;min-width:0;}
 .mteam{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:700;flex:1;min-width:0;}
 .mteam.away{flex-direction:row-reverse;text-align:right;}
-.mflag{font-size:17px;flex-shrink:0;}
+.mflag img{width:28px;height:19px;object-fit:cover;border-radius:2px;vertical-align:middle;flex-shrink:0;}
 .mname{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .mname.tbd-label{color:var(--muted);font-size:11px;font-weight:400;font-style:italic;}
 .mscore{font-size:20px;font-weight:900;min-width:68px;text-align:center;letter-spacing:2px;flex-shrink:0;}
@@ -154,29 +154,31 @@ table.ptbl{width:100%;border-collapse:collapse;}
 // ═══════════════════════════════════════════════════
 // GOOGLE SHEET  (columns: Partit | MatchID | HomeScore | AwayScore)
 // ═══════════════════════════════════════════════════
-const SHEET_CSV='https://docs.google.com/spreadsheets/d/e/2PACX-1vQWMby4w-T6JMlQl5lluW62Pabl9Zrahx6GddtirECk8j4Co1XGcVkQxxuf-AW_Uf2x1dyG7c5_5nuD/pub?gid=0&single=true&output=csv';
+const SHEET_CSV='https://docs.google.com/spreadsheets/d/1L3kjjN_D2U4SGH7xLS3k8wN1kY5FuRmuJrpOpKFP2yg/export?format=csv&gid=0';
 
 // ═══════════════════════════════════════════════════
 // TEAMS
 // ═══════════════════════════════════════════════════
+const BASE='https://raw.githubusercontent.com/andorrarugbyunion/FLAGS/main/';
+function fi(code){return `<img src="${BASE}${code}.png" alt="${code}">`;}
 const T={
-  LAT:{n:'Latvia',         f:'🇱🇻'},
-  LTU:{n:'Lithuania',      f:'🇱🇹'},
-  BUL:{n:'Bulgaria',       f:'🇧🇬'},
-  SVK:{n:'Slovakia',       f:'🇸🇰'},
-  MLT:{n:'Malta',          f:'🇲🇹'},
-  EST:{n:'Estonia',        f:'🇪🇪'},
-  GRE:{n:'Greece',         f:'🇬🇷'},
-  FIN:{n:'Finland',        f:'🇫🇮'},
-  LUX:{n:'Luxembourg',     f:'🇱🇺'},
-  ISR:{n:'Israel',         f:'🇮🇱'},
-  BIH:{n:'Bosnia & Herz.', f:'🇧🇦'},
-  AUT:{n:'Austria',        f:'🇦🇹'},
-  CYP:{n:'Cyprus',         f:'🇨🇾'},
-  SLO:{n:'Slovenia',       f:'🇸🇮'},
-  AND:{n:'Andorra',        f:'🇦🇩'},
-  SRB:{n:'Serbia',         f:'🇷🇸'},
-  TBD:{n:'TBD',            f:'🏳️'},
+  LAT:{n:'Latvia',         f:fi('LAT')},
+  LTU:{n:'Lithuania',      f:fi('LTU')},
+  BUL:{n:'Bulgaria',       f:fi('BUL')},
+  SVK:{n:'Slovakia',       f:fi('SVK')},
+  MLT:{n:'Malta',          f:fi('MLT')},
+  EST:{n:'Estonia',        f:fi('EST')},
+  GRE:{n:'Greece',         f:fi('GRE')},
+  FIN:{n:'Finland',        f:fi('FIN')},
+  LUX:{n:'Luxembourg',     f:fi('LUX')},
+  ISR:{n:'Israel',         f:fi('ISR')},
+  BIH:{n:'Bosnia & Herz.', f:fi('BIH')},
+  AUT:{n:'Austria',        f:fi('AUT')},
+  CYP:{n:'Cyprus',         f:fi('CYP')},
+  SLO:{n:'Slovenia',       f:fi('SLO')},
+  AND:{n:'Andorra',        f:fi('AND')},
+  SRB:{n:'Serbia',         f:fi('SRB')},
+  TBD:{n:'TBD',            f:''},
 };
 
 // ═══════════════════════════════════════════════════
