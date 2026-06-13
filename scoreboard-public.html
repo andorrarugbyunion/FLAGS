@@ -223,9 +223,9 @@ const DATA={
   men:{
     pools:{A:['LUX','CYP','FIN'],B:['AUT','BUL','SLO'],C:['AND','SRB','ISR']},
     pools2:{
-      D:{seeds:['1st Pool A','2nd Pool C','3rd Pool B']},
-      E:{seeds:['1st Pool B','2nd Pool A','3rd Pool C']},
-      F:{seeds:['1st Pool C','2nd Pool B','3rd Pool A']},
+      D:{teams:['LUX','AND','SLO']},
+      E:{teams:['AUT','CYP','SRB']},
+      F:{teams:['ISR','BUL','FIN']},
     },
     matches:[
       {id:'M01',date:'2026-06-13',time:'09:00',h:'LUX',a:'FIN',pool:'A',phase:'Pool A',ph:1},
@@ -237,15 +237,15 @@ const DATA={
       {id:'M07',date:'2026-06-13',time:'16:00',h:'LUX',a:'CYP',pool:'A',phase:'Pool A',ph:1},
       {id:'M08',date:'2026-06-13',time:'16:22',h:'AUT',a:'BUL',pool:'B',phase:'Pool B',ph:1},
       {id:'M09',date:'2026-06-13',time:'16:44',h:'AND',a:'SRB',pool:'C',phase:'Pool C',ph:1},
-      {id:'M10',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'D',phase:'Pool D — 1st A v 3rd B',ph:2},
-      {id:'M11',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'E',phase:'Pool E — 1st B v 3rd C',ph:2},
-      {id:'M12',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'F',phase:'Pool F — 1st C v 3rd A',ph:2},
-      {id:'M13',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'D',phase:'Pool D — 2nd C v 3rd B',ph:2},
-      {id:'M14',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'E',phase:'Pool E — 2nd A v 3rd C',ph:2},
-      {id:'M15',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'F',phase:'Pool F — 2nd B v 3rd A',ph:2},
-      {id:'M16',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'D',phase:'Pool D — 1st A v 2nd C',ph:2},
-      {id:'M17',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'E',phase:'Pool E — 1st B v 2nd A',ph:2},
-      {id:'M18',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool2:'F',phase:'Pool F — 1st C v 2nd B',ph:2},
+      {id:'M10',date:'2026-06-14',time:'09:00',h:'LUX',a:'SLO',pool2:'D',phase:'Pool D',ph:2},
+      {id:'M11',date:'2026-06-14',time:'09:22',h:'AUT',a:'SRB',pool2:'E',phase:'Pool E',ph:2},
+      {id:'M12',date:'2026-06-14',time:'09:44',h:'ISR',a:'FIN',pool2:'F',phase:'Pool F',ph:2},
+      {id:'M13',date:'2026-06-14',time:'11:16',h:'AND',a:'SLO',pool2:'D',phase:'Pool D',ph:2},
+      {id:'M14',date:'2026-06-14',time:'11:38',h:'CYP',a:'SRB',pool2:'E',phase:'Pool E',ph:2},
+      {id:'M15',date:'2026-06-14',time:'12:00',h:'BUL',a:'FIN',pool2:'F',phase:'Pool F',ph:2},
+      {id:'M16',date:'2026-06-14',time:'13:32',h:'LUX',a:'AND',pool2:'D',phase:'Pool D',ph:2},
+      {id:'M17',date:'2026-06-14',time:'13:54',h:'AUT',a:'CYP',pool2:'E',phase:'Pool E',ph:2},
+      {id:'M18',date:'2026-06-14',time:'14:16',h:'ISR',a:'BUL',pool2:'F',phase:'Pool F',ph:2},
       {id:'M19',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool:null,phase:'Ranking — #6 v #7',ph:3},
       {id:'M20',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool:null,phase:'Semi Final 1 — #1 v #4',ph:3},
       {id:'M21',date:'2026-06-14',time:'TBD',h:'TBD',a:'TBD',pool:null,phase:'Semi Final 2 — #2 v #3',ph:3},
@@ -423,32 +423,16 @@ function renderPools(tour){
 function renderMenPools2(){
   const el=document.getElementById('pg-men2');
   el.innerHTML=Object.keys(DATA.men.pools2).map(letter=>{
-    const pool=DATA.men.pools2[letter];
-    const rows=pool.seeds.map((seed,i)=>{
-      const code=resolveSeed(seed);
-      const team=code?T[code]:null;
-      return `<tr class="${i===0?'leader':''}">
-        <td><div class="tcell">${team
-          ?`<span class="tflag">${team.f}</span><span class="tname">${team.n}</span>`
-          :`<span class="tname" style="color:var(--muted);font-style:italic">${seed}</span>`
-        }</div></td>
-        <td>—</td><td>—</td><td>—</td><td>—</td><td class="pts-cell">—</td>
-      </tr>`;
-    }).join('');
-    return `<div class="pool-card">
-      <div class="pool-hdr">Pool ${letter}</div>
-      <table class="ptbl">
-        <thead><tr><th>Team</th><th>P</th><th>W</th><th>L</th><th>PD</th><th>Pts</th></tr></thead>
-        <tbody>${rows}</tbody>
-      </table>
-    </div>`;
+    const teams=DATA.men.pools2[letter].teams;
+    const matches=DATA.men.matches.filter(m=>m.pool2===letter);
+    return poolCard(letter,teams,calcStandings(matches,teams));
   }).join('');
 }
 
 function renderFixtures(tour){
   const el=document.getElementById(`fx-${tour}`);
   const byDate={};
-  DATA[tour].matches.forEach(m=>{if(!byDate[m.date])byDate[m.date]=[];byDate[m.date].push(m);});
+  DATA[tour].matches.filter(m=>m.h!=='TBD'&&m.a!=='TBD').forEach(m=>{if(!byDate[m.date])byDate[m.date]=[];byDate[m.date].push(m);});
   el.innerHTML=Object.entries(byDate).map(([date,ms])=>
     `<div class="day-group"><div class="day-label">${DATE_LABELS[date]||date}</div>${ms.map(matchRow).join('')}</div>`
   ).join('');
